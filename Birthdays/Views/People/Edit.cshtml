@@ -1,0 +1,43 @@
+﻿@using Birthdays.Models
+@model People
+
+<h3>Edit Birthday</h3>
+
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+    <input type="hidden" id="Id" name="Id" value="@Model.Id" />
+    <div class="form-group">
+        <label for="Photo">Photo</label>
+        <input type="file" id="Photo" name="Photo" class="form-control-file" accept=".jpg,.jpeg,.png" />
+        @if (Model.Photo != null)
+        {
+            <img src="data:image;base64,@Convert.ToBase64String(Model.Photo)" style="margin: 20px 0px; width: 100px; height: 100px;" />
+            <button type="button" class="btn btn-danger" id="btnDeletePhoto">Delete Photo</button>
+        }
+    </div>
+    <div class="form-group">
+        <label for="Name">Name</label>
+        <input type="text" id="Name" name="Name" class="form-control" value="@Model.Name" required />
+    </div>
+    <div class="form-group">
+        <label for="DateOfBirth">Date of Birth</label>
+        <input type="date" id="DateOfBirth" name="DateOfBirth" class="form-control" value="@Model.DateOfBirth.ToString("yyyy-MM-dd")" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+
+<form id="formDeletePhoto" asp-action="DeletePhoto" method="post" style="display: none;">
+    <input type="hidden" id="Id" name="Id" value="@Model.Id" />
+</form>
+
+<p>&nbsp;</p>
+<p><a href="javascript:history.back()">Back</a></p>
+
+@section Scripts {
+    <script>
+        document.getElementById("btnDeletePhoto").onclick = function () {
+            if (confirm("Are you sure you want to delete the photo?")) {
+                document.getElementById("formDeletePhoto").submit();
+            }
+        };
+    </script>
+}
